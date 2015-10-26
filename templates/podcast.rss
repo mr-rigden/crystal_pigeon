@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0">
+    <channel>
+        <!-- START RSS Spec -->
+            <copyright>{{CRYSTAL_PIGEON.PODCAST_COPYRIGHT}}</copyright>
+            <description>{{CRYSTAL_PIGEON.PODCAST_SUMMARY}}</description>
+            <link>{{CRYSTAL_PIGEON.PODCAST_LINK}}</link>
+            <language>{{CRYSTAL_PIGEON.PODCAST_LANGUAGE}}</language>
+            <title>{{CRYSTAL_PIGEON.PODCAST_TITLE}}</title>
+        <!-- END RSS Spec -->
+
+        <!-- START iTunes Clutter -->
+            <itunes:subtitle>{{CRYSTAL_PIGEON.PODCAST_SUBTITLE}}</itunes:subtitle>
+            <itunes:author>{{CRYSTAL_PIGEON.PODCAST_AUTHOR}}</itunes:author>
+            <itunes:summary>{{CRYSTAL_PIGEON.PODCAST_SUMMARY}}</itunes:summary>
+            <itunes:owner>
+                <itunes:name>{{CRYSTAL_PIGEON.PODCAST_OWNER.NAME}}</itunes:name>
+                <itunes:email>{{CRYSTAL_PIGEON.PODCAST_OWNER.EMAIL}}</itunes:email>
+            </itunes:owner>
+            <itunes:image href="{{CRYSTAL_PIGEON.PODCAST_IMAGE}}"/>
+            {% if CRYSTAL_PIGEON.PODCAST_EXPLICIT  %}
+                <itunes:explicit>yes</itunes:explicit>
+            {% else %}
+                <itunes:explicit>no</itunes:explicit>
+            {% endif %}
+            {% for category in CRYSTAL_PIGEON.PODCAST_CATEGORY %}
+                <itunes:category text="{{category}}" />
+            {% endfor %}
+        <!-- END iTunes Clutter -->
+
+        {% for post in posts %}
+            <item>
+
+                <!-- START RSS Spec -->
+                    <description>{{post.summary|striptags}}</description>
+                    <enclosure url="{{post.enclosure_url}}" length="{{post.enclosure_length}}" type="{{post.enclosure_type}}"/>
+                    <guid>{{site_url}}/{{post.url}}</guid>
+                    <link>{{site_url}}/{{post.url}}</link>
+                    <pubDate>{{ post.date.strftime("%a, %d %b %Y %H:%M:%S %z") }}</pubDate>
+                    <title>{{post.title}}</title>
+                <!-- END RSS Spec -->
+
+                <!-- START iTunes Clutter -->
+                    <itunes:author>{{CRYSTAL_PIGEON.PODCAST_AUTHOR}}</itunes:author>
+                    <itunes:subtitle>{{post.summary|striptags}}</itunes:subtitle>
+                    <itunes:summary>{{post.summary|striptags}}</itunes:summary>
+                    <itunes:duration>{{post.enclosure_duration}}</itunes:duration>
+                    <itunes:keywords>{{ post.tags|join(', ') }}</itunes:keywords>
+                <!-- START iTunes Clutter -->
+
+            </item>
+        {% endfor %}
+
+
+
+
+    </channel>
+</rss>
